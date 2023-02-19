@@ -1,0 +1,25 @@
+# https://int-i.github.io/sql/2020-12-31/mysql-docker-compose/ 참조고 yml 생성
+# https://www.daleseo.com/docker-networks/ network에 대해서 정리 필요
+# https://captcha.tistory.com/70 네트워크
+# 정리 가장 잘된 것  https://www.44bits.io/ko/post/almost-perfect-development-environment-with-docker-and-docker-compose#django-%EC%95%B1-%EC%BB%A8%ED%85%8C%EC%9D%B4%EB%84%88-%EC%8B%A4%ED%96%89 
+version: "3"
+
+services:
+  db:
+    image: mariadb:10
+    container_name: mymariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db/conf.d:/etc/mysql/conf.d
+      - ./db/data:/var/lib/mysql
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    env_file: .env
+    environment:
+      TZ: Asia/Seoul
+    networks:
+      - backend
+    restart: always
+
+networks:
+  backend:
